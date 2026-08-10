@@ -11,7 +11,7 @@ namespace Verizon.Models;
 public record GeoFence
 {
     [JsonPropertyName("type")]
-    public required TypeModel Type { get; init; }
+    public required TypeEnum Type { get; init; }
 
     [JsonPropertyName("features")]
     [MinLength(1)]
