@@ -1,0 +1,166 @@
+using System;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using Verizon.Core;
+using Verizon.Core.ErrorResponse;
+using Verizon.Core.Exceptions;
+using Verizon.Core.Models;
+using Verizon.Core.Request;
+using Verizon.Core.Response;
+using Verizon.Models;
+using Verizon.Requests.WirelessNetworkPerformance;
+
+namespace Verizon.Api;
+
+/// <summary>
+/// Run reports to query current network conditions, historic network conditions, see what wireless technologies are supported in your area or qualify and address for Fixed Wireless Access (FWA).
+/// </summary>
+public sealed class WirelessNetworkPerformance
+{
+    private readonly RawClient _rawClient;
+    private readonly Server _server;
+    private readonly AuthSchemes _auth;
+
+    internal WirelessNetworkPerformance(RawClient rawClient, Server server, AuthSchemes auth)
+    {
+        _rawClient = rawClient;
+        _server = server;
+        _auth = auth;
+    }
+
+    /// <summary>
+    /// Device Experience - 30 days History
+    /// </summary>
+    /// <param name="request">The operation's inputs</param>
+    /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A <see cref="Task{TResult}"/> of <see cref="WnpRequestResponse"/> instance.</returns>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <remarks>
+    /// A report of a specific device's service scores over a 30 day period.
+    /// </remarks>
+    public Task<WnpRequestResponse> DeviceExperience30DaysHistory(DeviceExperience30DaysHistoryRequest request,
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Thingspace("/m2m/v1/intelligence/device-experience/history/30-days"),
+            [],
+            [],
+            [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
+            HttpMethod.Post,
+            JsonRequest.Create(request.Body),
+            JsonResponse.Create<WnpRequestResponse>(),
+            RawErrorResponse.Instance,
+            [_auth.ThingspaceOauth, _auth.VzM2MToken],
+            requestOptions,
+            cancellationToken);
+
+    /// <summary>
+    /// Device Experience - Bulk Latest
+    /// </summary>
+    /// <param name="request">The operation's inputs</param>
+    /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A <see cref="Task{TResult}"/> of <see cref="WnpRequestResponse"/> instance.</returns>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <remarks>
+    /// Run a report to view the latest device experience score for specific devices.
+    /// </remarks>
+    public Task<WnpRequestResponse> DeviceExperienceBulkLatest(DeviceExperienceBulkLatestRequest request,
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Thingspace("/m2m/v1/intelligence/device-experience/bulk/latest"),
+            [],
+            [],
+            [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
+            HttpMethod.Post,
+            JsonRequest.Create(request.Body),
+            JsonResponse.Create<WnpRequestResponse>(),
+            RawErrorResponse.Instance,
+            [_auth.ThingspaceOauth, _auth.VzM2MToken],
+            requestOptions,
+            cancellationToken);
+
+    /// <summary>
+    /// Domestic 4G and 5G nationwide network coverage
+    /// </summary>
+    /// <param name="request">The operation's inputs</param>
+    /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A <see cref="Task{TResult}"/> of <see cref="WnpRequestResponse"/> instance.</returns>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <remarks>
+    /// Run a report for FWA Address qualification or to determine network types available and available coverage. Network types covered include: CAT-M, NB-IOT, LTE, LTE-AWS, 5GNW, MMWAVE and C-BAND.
+    /// </remarks>
+    public Task<WnpRequestResponse> Domestic4GAnd5GNationwideNetworkCoverage(Domestic4GAnd5GNationwideNetworkCoverageRequest request,
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Thingspace("/m2m/v1/intelligence/wireless-coverage"),
+            [],
+            [],
+            [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
+            HttpMethod.Post,
+            JsonRequest.Create(request.Body),
+            JsonResponse.Create<WnpRequestResponse>(),
+            RawErrorResponse.Instance,
+            [_auth.ThingspaceOauth, _auth.VzM2MToken],
+            requestOptions,
+            cancellationToken);
+
+    /// <summary>
+    /// Near real-time network conditions
+    /// </summary>
+    /// <param name="request">The operation's inputs</param>
+    /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A <see cref="Task{TResult}"/> of <see cref="WnpRequestResponse"/> instance.</returns>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <remarks>
+    /// WNP Query for current network condition.
+    /// </remarks>
+    public Task<WnpRequestResponse> NearRealTimeNetworkConditions(NearRealTimeNetworkConditionsRequest request,
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Thingspace("/m2m/v1/intelligence/network-conditions"),
+            [],
+            [],
+            [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
+            HttpMethod.Post,
+            JsonRequest.Create(request.Body),
+            JsonResponse.Create<WnpRequestResponse>(),
+            RawErrorResponse.Instance,
+            [_auth.ThingspaceOauth, _auth.VzM2MToken],
+            requestOptions,
+            cancellationToken);
+
+    /// <summary>
+    /// Site Proximity
+    /// </summary>
+    /// <param name="request">The operation's inputs</param>
+    /// <param name="requestOptions">Per-request options, such as an overriding log level for this call</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>A <see cref="Task{TResult}"/> of <see cref="WnpRequestResponse"/> instance.</returns>
+    /// <exception cref="ApiException{TError}"> of <see cref="RawError"/> when the server returns an error response.</exception>
+    /// <remarks>
+    /// Identify the direction and general distance of nearby cell sites and the technology supported by the equipment.
+    /// </remarks>
+    public Task<WnpRequestResponse> SiteProximity(SiteProximityRequest request,
+        RequestOptions? requestOptions = null,
+        CancellationToken cancellationToken = default) =>
+        _rawClient.Execute(
+            _server.Thingspace("/m2m/v1/intelligence/site-proximity/action/list"),
+            [],
+            [],
+            [new HeaderParam("Idempotency-Key", Guid.NewGuid())],
+            HttpMethod.Post,
+            JsonRequest.Create(request.Body),
+            JsonResponse.Create<WnpRequestResponse>(),
+            RawErrorResponse.Instance,
+            [_auth.ThingspaceOauth, _auth.VzM2MToken],
+            requestOptions,
+            cancellationToken);
+}
